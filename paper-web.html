@@ -1,0 +1,960 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaze-Contingent vs. Traditional Visual Search</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36BFFA',
+                        accent: '#FF7D00',
+                        dark: '#1D2939',
+                        light: '#F9FAFB'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .transition-transform-opacity {
+                transition-property: transform, opacity;
+            }
+            .hover-scale {
+                @apply hover:scale-105 transition-all duration-300;
+            }
+        }
+    </style>
+</head>
+<body class="font-inter text-dark bg-light">
+    <!-- 导航栏 -->
+    <header id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-sm shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="#" class="text-primary font-bold text-xl flex items-center">
+                        <i class="fa fa-eye mr-2"></i>
+                        <span>Gaze Research</span>
+                    </a>
+                </div>
+                
+                <!-- 桌面导航 -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#overview" class="text-dark hover:text-primary transition-colors font-medium">Overview</a>
+                    <a href="#method" class="text-dark hover:text-primary transition-colors font-medium">Method</a>
+                    <a href="#results" class="text-dark hover:text-primary transition-colors font-medium">Results</a>
+                    <a href="#publication" class="text-dark hover:text-primary transition-colors font-medium">Publication</a>
+                    <a href="#team" class="text-dark hover:text-primary transition-colors font-medium">Team</a>
+                    <a href="#contact" class="text-dark hover:text-primary transition-colors font-medium">Contact</a>
+                </nav>
+                
+                <!-- 移动端菜单按钮 -->
+                <div class="md:hidden">
+                    <button id="menu-toggle" class="text-dark hover:text-primary focus:outline-none">
+                        <i class="fa fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 移动端导航菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#overview" class="block px-3 py-2 rounded-md text-base font-medium text-dark hover:bg-primary/10 hover:text-primary">Overview</a>
+                <a href="#method" class="block px-3 py-2 rounded-md text-base font-medium text-dark hover:bg-primary/10 hover:text-primary">Method</a>
+                <a href="#results" class="block px-3 py-2 rounded-md text-base font-medium text-dark hover:bg-primary/10 hover:text-primary">Results</a>
+                <a href="#publication" class="block px-3 py-2 rounded-md text-base font-medium text-dark hover:bg-primary/10 hover:text-primary">Publication</a>
+                <a href="#team" class="block px-3 py-2 rounded-md text-base font-medium text-dark hover:bg-primary/10 hover:text-primary">Team</a>
+                <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-dark hover:bg-primary/10 hover:text-primary">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section class="relative pt-24 pb-16 md:pt-32 md:pb-24 bg-gradient-to-br from-primary/5 to-secondary/5">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold text-dark leading-tight mb-4 text-shadow">Perceptually-guided Dual-mode Virtual Reality System For Motion-adaptive Display</h1>
+                <p class="text-[clamp(1rem,2vw,1.25rem)] text-dark/80 mb-8">
+                    Exploring the efficiency and cognitive load differences between gaze-contingent and traditional visual search interfaces
+                </p>
+                <div class="flex flex-wrap justify-center gap-4 mb-8">
+                    <span class="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium">
+                        <i class="fa fa-calendar mr-1"></i> Published 2025
+                    </span>
+                    <span class="px-4 py-2 bg-accent/10 text-accent rounded-full text-sm font-medium">
+                        <i class="fa fa-flask mr-1"></i> Human-Computer Interaction
+                    </span>
+                    <span class="px-4 py-2 bg-secondary/10 text-secondary rounded-full text-sm font-medium">
+                        <i class="fa fa-eye mr-1"></i> Eye Tracking Research
+                    </span>
+                </div>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="#overview" class="px-6 py-3 bg-primary text-white rounded-lg shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all hover-scale">
+                        <i class="fa fa-info-circle mr-2"></i> Learn More
+                    </a>
+                    <a href="#publication" class="px-6 py-3 bg-white text-primary border border-primary rounded-lg hover:bg-primary/5 transition-all hover-scale">
+                        <i class="fa fa-file-pdf-o mr-2"></i> Download PDF
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 装饰性图形 -->
+        <div class="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full -translate-y-1/2 translate-x-1/4 blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 w-80 h-80 bg-secondary/10 rounded-full translate-y-1/2 -translate-x-1/4 blur-3xl"></div>
+    </section>
+
+    <!-- 概述部分 -->
+    <section id="overview" class="py-16 md:py-24">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-12 text-center">
+                    Research Overview
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="order-2 md:order-1">
+                        <h3 class="text-2xl font-semibold text-dark mb-4">Understanding Visual Search</h3>
+                        <p class="text-dark/80 mb-4">
+                            Visual search is a fundamental cognitive process that allows humans to locate specific targets within a cluttered environment. Traditional interfaces rely on manual interactions, while gaze-contingent interfaces leverage eye tracking technology to enhance interaction efficiency.
+                        </p>
+                        <p class="text-dark/80 mb-6">
+                            This research investigates whether gaze-contingent visual search can reduce cognitive load and improve task performance compared to traditional methods.
+                        </p>
+                        
+                        <div class="bg-white rounded-xl shadow-lg p-6 mb-6 border border-gray-100">
+                            <h4 class="font-semibold text-dark mb-2 flex items-center">
+                                <i class="fa fa-lightbulb-o text-accent mr-2"></i> Research Question
+                            </h4>
+                            <p class="text-dark/80 italic">
+                                "Does gaze-contingent interaction improve visual search performance in terms of speed, accuracy, and perceived cognitive load compared to traditional mouse-based interaction?"
+                            </p>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-primary/5 rounded-lg p-4 border border-primary/10">
+                                <h4 class="font-semibold text-primary mb-1">24 Participants</h4>
+                                <p class="text-sm text-dark/70">Mixed gender, ages 18-35</p>
+                            </div>
+                            <div class="bg-secondary/5 rounded-lg p-4 border border-secondary/10">
+                                <h4 class="font-semibold text-secondary mb-1">320 Trials</h4>
+                                <p class="text-sm text-dark/70">Per participant</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="order-1 md:order-2">
+                        <div class="relative rounded-xl overflow-hidden shadow-xl">
+                            <img src="https://picsum.photos/id/237/800/600" alt="Visual search experiment setup" class="w-full h-auto">
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark/60 to-transparent flex items-end">
+                                <div class="p-6">
+                                    <p class="text-white font-medium">Figure 1: Experimental setup with eye tracking equipment</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 方法部分 -->
+    <section id="method" class="py-16 md:py-24 bg-gray-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-12 text-center">
+                    Research Method
+                </h2>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover-scale">
+                        <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                            <i class="fa fa-users text-primary text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-dark mb-3">Participants</h3>
+                        <p class="text-dark/80">
+                            24 participants (12 male, 12 female) aged between 18 and 35 years with normal or corrected-to-normal vision.
+                        </p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover-scale">
+                        <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mb-4">
+                            <i class="fa fa-desktop text-secondary text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-dark mb-3">Apparatus</h3>
+                        <p class="text-dark/80">
+                            Tobii Pro Spectrum eye tracker (120 Hz sampling rate), 24-inch LCD monitor (1920×1080 resolution), and standard keyboard and mouse.
+                        </p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover-scale">
+                        <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
+                            <i class="fa fa-tasks text-accent text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-dark mb-3">Tasks</h3>
+                        <p class="text-dark/80">
+                            Participants performed visual search tasks using both traditional mouse-based interaction and gaze-contingent interaction with different levels of visual complexity.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="mt-12">
+                    <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                        <h3 class="text-xl font-semibold text-dark mb-6">Experimental Design</h3>
+                        
+                        <div class="relative">
+                            <!-- 时间线 -->
+                            <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-primary/20"></div>
+                            
+                            <div class="space-y-8">
+                                <div class="relative pl-12">
+                                    <div class="absolute left-0 top-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                                        <i class="fa fa-check text-white"></i>
+                                    </div>
+                                    <h4 class="text-lg font-medium text-dark mb-1">Pre-Experiment</h4>
+                                    <p class="text-dark/80">
+                                        Participants completed a training session to familiarize themselves with the task and equipment. Baseline measurements were taken.
+                                    </p>
+                                </div>
+                                
+                                <div class="relative pl-12">
+                                    <div class="absolute left-0 top-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                                        <i class="fa fa-search text-white"></i>
+                                    </div>
+                                    <h4 class="text-lg font-medium text-dark mb-1">Visual Search Tasks</h4>
+                                    <p class="text-dark/80">
+                                        Participants performed 320 trials of visual search tasks in both traditional and gaze-contingent conditions, counterbalanced to control for order effects.
+                                    </p>
+                                </div>
+                                
+                                <div class="relative pl-12">
+                                    <div class="absolute left-0 top-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                                        <i class="fa fa-pencil text-white"></i>
+                                    </div>
+                                    <h4 class="text-lg font-medium text-dark mb-1">Questionnaires</h4>
+                                    <p class="text-dark/80">
+                                        After each condition, participants completed the NASA-TLX questionnaire to assess perceived cognitive load and a SUS questionnaire for system usability.
+                                    </p>
+                                </div>
+                                
+                                <div class="relative pl-12">
+                                    <div class="absolute left-0 top-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+                                        <i class="fa fa-bar-chart text-white"></i>
+                                    </div>
+                                    <h4 class="text-lg font-medium text-dark mb-1">Data Analysis</h4>
+                                    <p class="text-dark/80">
+                                        Reaction times, error rates, and questionnaire responses were analyzed using repeated measures ANOVA and paired t-tests.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 结果部分 -->
+    <section id="results" class="py-16 md:py-24">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-12 text-center">
+                    Key Findings
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-8 mb-12">
+                    <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                        <h3 class="text-xl font-semibold text-dark mb-4">Task Completion Time</h3>
+                        <div class="h-80">
+                            <canvas id="timeChart"></canvas>
+                        </div>
+                        <p class="text-dark/70 text-sm mt-4">
+                            Figure 2: Comparison of mean task completion times between traditional and gaze-contingent conditions across different complexity levels. Error bars represent standard error.
+                        </p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                        <h3 class="text-xl font-semibold text-dark mb-4">Perceived Cognitive Load</h3>
+                        <div class="h-80">
+                            <canvas id="cognitiveLoadChart"></canvas>
+                        </div>
+                        <p class="text-dark/70 text-sm mt-4">
+                            Figure 3: NASA-TLX cognitive load scores for traditional and gaze-contingent conditions. Lower scores indicate lower perceived cognitive load.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover-scale">
+                        <div class="text-4xl font-bold text-primary mb-2">22.4% <span class="text-base font-normal">faster</span></div>
+                        <h3 class="text-lg font-semibold text-dark mb-2">Task Completion</h3>
+                        <p class="text-dark/80">
+                            Gaze-contingent interface showed significant improvement in task completion time compared to traditional methods.
+                        </p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover-scale">
+                        <div class="text-4xl font-bold text-secondary mb-2">18.7% <span class="text-base font-normal">lower</span></div>
+                        <h3 class="text-lg font-semibold text-dark mb-2">Cognitive Load</h3>
+                        <p class="text-dark/80">
+                            Participants reported significantly lower cognitive load when using gaze-contingent interaction.
+                        </p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover-scale">
+                        <div class="text-4xl font-bold text-accent mb-2">94% <span class="text-base font-normal">accuracy</span></div>
+                        <h3 class="text-lg font-semibold text-dark mb-2">Target Detection</h3>
+                        <p class="text-dark/80">
+                            Gaze-contingent interface achieved comparable accuracy to traditional methods with less physical effort.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="mt-12 bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                    <h3 class="text-xl font-semibold text-dark mb-4">Summary of Results</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead>
+                                <tr>
+                                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Measure</th>
+                                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Traditional</th>
+                                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gaze-Contingent</th>
+                                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Significance</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-dark">Completion Time (s)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-dark/80">12.7 ± 2.3</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-dark/80">9.9 ± 1.8</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">p &lt; 0.001</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-dark">Error Rate (%)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-dark/80">5.8 ± 1.2</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-dark/80">6.3 ± 1.5</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">ns</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-dark">NASA-TLX Score</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-dark/80">62.4 ± 8.7</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-dark/80">50.8 ± 7.3</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">p &lt; 0.01</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-dark">SUS Score</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-dark/80">72.3 ± 9.1</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-dark/80">85.6 ± 6.8</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">p &lt; 0.001</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 出版物部分 -->
+    <section id="publication" class="py-16 md:py-24 bg-gray-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-12 text-center">
+                    Publication
+                </h2>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="w-48 h-64 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                            <img src="https://picsum.photos/id/24/300/400" alt="Publication cover" class="w-full h-full object-cover">
+                        </div>
+                        
+                        <div class="flex-grow">
+                            <h3 class="text-2xl font-semibold text-dark mb-2">
+                                Gaze-Contingent Visual Search: Comparing Efficiency and Cognitive Load with Traditional Interfaces
+                            </h3>
+                            <p class="text-dark/70 mb-4">
+                                <span class="font-medium">Authors:</span> 
+                                <span class="text-primary">John Doe</span>, 
+                                <span class="text-primary">Jane Smith</span>, 
+                                <span class="text-primary">Robert Johnson</span>
+                            </p>
+                            <p class="text-dark/70 mb-4">
+                                <span class="font-medium">Published in:</span> 
+                                <span class="italic">Journal of Human-Computer Interaction</span>, 
+                                Volume 12, Issue 3, pp. 45-68, 2025
+                            </p>
+                            <p class="text-dark/70 mb-6">
+                                <span class="font-medium">DOI:</span> <a href="#" class="text-primary hover:underline">10.1234/jhci.2025.12.3.45</a>
+                            </p>
+                            
+                            <div class="flex flex-wrap gap-4">
+                                <a href="#" class="px-4 py-2 bg-primary text-white rounded-lg shadow hover:bg-primary/90 transition-all hover-scale">
+                                    <i class="fa fa-file-pdf-o mr-2"></i> Download PDF
+                                </a>
+                                <a href="#" class="px-4 py-2 bg-white text-primary border border-primary rounded-lg hover:bg-primary/5 transition-all hover-scale">
+                                    <i class="fa fa-external-link mr-2"></i> View on Journal Website
+                                </a>
+                                <a href="#" class="px-4 py-2 bg-white text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-all hover-scale">
+                                    <i class="fa fa-database mr-2"></i> Dataset
+                                </a>
+                                <a href="#" class="px-4 py-2 bg-white text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-all hover-scale">
+                                    <i class="fa fa-code mr-2"></i> Code Repository
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-12 bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                    <h3 class="text-xl font-semibold text-dark mb-4">Citation</h3>
+                    <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                        <pre class="text-dark/70 font-mono text-sm overflow-x-auto">@article{doe2025gaze,
+    title={Gaze-Contingent Visual Search: Comparing Efficiency and Cognitive Load with Traditional Interfaces},
+    author={Doe, John and Smith, Jane and Johnson, Robert},
+    journal={Journal of Human-Computer Interaction},
+    volume={12},
+    number={3},
+    pages={45--68},
+    year={2025},
+    publisher={ACM}
+}</pre>
+                    </div>
+                    <button class="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-all">
+                        <i class="fa fa-copy mr-2"></i> Copy BibTeX
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 团队部分 -->
+    <section id="team" class="py-16 md:py-24">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-12 text-center">
+                    Research Team
+                </h2>
+                
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover-scale">
+                        <div class="relative">
+                            <img src="https://picsum.photos/id/1005/400/400" alt="John Doe" class="w-full h-64 object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark/60 to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end">
+                                <div class="p-4 w-full">
+                                    <div class="flex justify-center space-x-3">
+                                        <a href="#" class="w-8 h-8 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center text-white transition-all">
+                                            <i class="fa fa-envelope"></i>
+                                        </a>
+                                        <a href="#" class="w-8 h-8 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center text-white transition-all">
+                                            <i class="fa fa-twitter"></i>
+                                        </a>
+                                        <a href="#" class="w-8 h-8 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center text-white transition-all">
+                                            <i class="fa fa-linkedin"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-dark mb-1">John Doe</h3>
+                            <p class="text-primary mb-3">Principal Investigator</p>
+                            <p class="text-dark/70 text-sm">
+                                Associate Professor of Human-Computer Interaction with expertise in eye tracking research and cognitive psychology.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover-scale">
+                        <div class="relative">
+                            <img src="https://picsum.photos/id/1000/400/400" alt="Jane Smith" class="w-full h-64 object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark/60 to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end">
+                                <div class="p-4 w-full">
+                                    <div class="flex justify-center space-x-3">
+                                        <a href="#" class="w-8 h-8 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center text-white transition-all">
+                                            <i class="fa fa-envelope"></i>
+                                        </a>
+                                        <a href="#" class="w-8 h-8 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center text-white transition-all">
+                                            <i class="fa fa-twitter"></i>
+                                        </a>
+                                        <a href="#" class="w-8 h-8 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center text-white transition-all">
+                                            <i class="fa fa-linkedin"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-dark mb-1">Jane Smith</h3>
+                            <p class="text-primary mb-3">Research Assistant</p>
+                            <p class="text-dark/70 text-sm">
+                                PhD candidate specializing in interactive systems and gaze-based interfaces with a focus on user experience.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover-scale">
+                        <div class="relative">
+                            <img src="https://picsum.photos/id/1012/400/400" alt="Robert Johnson" class="w-full h-64 object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark/60 to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end">
+                                <div class="p-4 w-full">
+                                    <div class="flex justify-center space-x-3">
+                                        <a href="#" class="w-8 h-8 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center text-white transition-all">
+                                            <i class="fa fa-envelope"></i>
+                                        </a>
+                                        <a href="#" class="w-8 h-8 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center text-white transition-all">
+                                            <i class="fa fa-twitter"></i>
+                                        </a>
+                                        <a href="#" class="w-8 h-8 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center text-white transition-all">
+                                            <i class="fa fa-linkedin"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-dark mb-1">Robert Johnson</h3>
+                            <p class="text-primary mb-3">Research Engineer</p>
+                            <p class="text-dark/70 text-sm">
+                                Expert in developing eye tracking algorithms and implementing gaze-contingent systems for human-computer interaction.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover-scale">
+                        <div class="relative">
+                            <img src="https://picsum.photos/id/1027/400/400" alt="Emily Chen" class="w-full h-64 object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark/60 to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end">
+                                <div class="p-4 w-full">
+                                    <div class="flex justify-center space-x-3">
+                                        <a href="#" class="w-8 h-8 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center text-white transition-all">
+                                            <i class="fa fa-envelope"></i>
+                                        </a>
+                                        <a href="#" class="w-8 h-8 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center text-white transition-all">
+                                            <i class="fa fa-twitter"></i>
+                                        </a>
+                                        <a href="#" class="w-8 h-8 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center text-white transition-all">
+                                            <i class="fa fa-linkedin"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-dark mb-1">Emily Chen</h3>
+                            <p class="text-primary mb-3">Graduate Researcher</p>
+                            <p class="text-dark/70 text-sm">
+                                Cognitive psychologist specializing in visual attention and its applications in human-computer interaction design.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系部分 -->
+    <section id="contact" class="py-16 md:py-24 bg-gray-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-12 text-center">
+                    Contact &amp; Collaboration
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-12">
+                    <div>
+                        <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100 mb-6">
+                            <h3 class="text-xl font-semibold text-dark mb-4">Get in Touch</h3>
+                            <form>
+                                <div class="mb-4">
+                                    <label for="name" class="block text-sm font-medium text-dark/80 mb-1">Your Name</label>
+                                    <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all" placeholder="John Doe">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="email" class="block text-sm font-medium text-dark/80 mb-1">Email Address</label>
+                                    <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all" placeholder="john@example.com">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="subject" class="block text-sm font-medium text-dark/80 mb-1">Subject</label>
+                                    <input type="text" id="subject" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all" placeholder="Regarding your research on gaze-contingent interfaces">
+                                </div>
+                                <div class="mb-6">
+                                    <label for="message" class="block text-sm font-medium text-dark/80 mb-1">Message</label>
+                                    <textarea id="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all" placeholder="Please provide details about your inquiry or collaboration proposal..."></textarea>
+                                </div>
+                                <button type="submit" class="px-6 py-3 bg-primary text-white rounded-lg shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all hover-scale">
+                                    <i class="fa fa-paper-plane mr-2"></i> Send Message
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                            <h3 class="text-xl font-semibold text-dark mb-4">Research Lab</h3>
+                            <div class="flex items-start mb-4">
+                                <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                                    <i class="fa fa-map-marker text-primary"></i>
+                                </div>
+                                <div>
+                                    <p class="text-dark/80">Immersive Technology Lab</p>
+                                    <p class="text-dark/70">Department of Computer Science</p>
+                                    <p class="text-dark/70">University of Technology</p>
+                                    <p class="text-dark/70">123 Technology Drive</p>
+                                    <p class="text-dark/70">Innovation City, Tech State 98765</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                                    <i class="fa fa-envelope text-primary"></i>
+                                </div>
+                                <a href="mailto:gaze.research@ut.edu" class="text-primary hover:underline">gaze.research@ut.edu</a>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                                    <i class="fa fa-phone text-primary"></i>
+                                </div>
+                                <a href="tel:+15551234567" class="text-dark/80 hover:underline">+1 (555) 123-4567</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                            <h3 class="text-xl font-semibold text-dark mb-4">Related Projects</h3>
+                            <div class="space-y-4">
+                                <a href="#" class="block p-4 bg-gray-50 rounded-lg hover:bg-primary/5 transition-all hover-scale">
+                                    <h4 class="font-medium text-dark mb-1">Eye Tracking for Augmented Reality Interfaces</h4>
+                                    <p class="text-dark/70 text-sm mb-2">
+                                        Investigating how eye tracking can enhance user interaction with augmented reality environments.
+                                    </p>
+                                    <span class="text-primary text-sm flex items-center">
+                                        View Project <i class="fa fa-arrow-right ml-1"></i>
+                                    </span>
+                                </a>
+                                
+                                <a href="#" class="block p-4 bg-gray-50 rounded-lg hover:bg-primary/5 transition-all hover-scale">
+                                    <h4 class="font-medium text-dark mb-1">Gaze-Based Interaction for People with Motor Impairments</h4>
+                                    <p class="text-dark/70 text-sm mb-2">
+                                        Developing accessible interfaces that utilize eye tracking for individuals with limited motor control.
+                                    </p>
+                                    <span class="text-primary text-sm flex items-center">
+                                        View Project <i class="fa fa-arrow-right ml-1"></i>
+                                    </span>
+                                </a>
+                                
+                                <a href="#" class="block p-4 bg-gray-50 rounded-lg hover:bg-primary/5 transition-all hover-scale">
+                                    <h4 class="font-medium text-dark mb-1">Visual Attention Modeling in Complex Environments</h4>
+                                    <p class="text-dark/70 text-sm mb-2">
+                                        Creating computational models to predict human visual attention in cluttered visual scenes.
+                                    </p>
+                                    <span class="text-primary text-sm flex items-center">
+                                        View Project <i class="fa fa-arrow-right ml-1"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+                            <h3 class="text-xl font-semibold text-dark mb-4">Resources</h3>
+                            <ul class="space-y-3">
+                                <li>
+                                    <a href="#" class="flex items-center text-dark/80 hover:text-primary transition-colors">
+                                        <i class="fa fa-file-pdf-o mr-2"></i>
+                                        <span>Download Full Research Paper</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="flex items-center text-dark/80 hover:text-primary transition-colors">
+                                        <i class="fa fa-database mr-2"></i>
+                                        <span>Dataset and Analysis Code</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="flex items-center text-dark/80 hover:text-primary transition-colors">
+                                        <i class="fa fa-slideshare mr-2"></i>
+                                        <span>Conference Presentation Slides</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="flex items-center text-dark/80 hover:text-primary transition-colors">
+                                        <i class="fa fa-youtube-play mr-2"></i>
+                                        <span>Video Demonstration</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="flex items-center text-dark/80 hover:text-primary transition-colors">
+                                        <i class="fa fa-newspaper-o mr-2"></i>
+                                        <span>Media Coverage</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-12">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Gaze Research</h3>
+                    <p class="text-gray-400 mb-4">
+                        Exploring the intersection of eye tracking technology and human-computer interaction to create more efficient and intuitive interfaces.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-all">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-all">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-all">
+                            <i class="fa fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-all">
+                            <i class="fa fa-youtube-play"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#overview" class="text-gray-400 hover:text-white transition-colors">Overview</a></li>
+                        <li><a href="#method" class="text-gray-400 hover:text-white transition-colors">Method</a></li>
+                        <li><a href="#results" class="text-gray-400 hover:text-white transition-colors">Results</a></li>
+                        <li><a href="#publication" class="text-gray-400 hover:text-white transition-colors">Publication</a></li>
+                        <li><a href="#team" class="text-gray-400 hover:text-white transition-colors">Research Team</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Research Papers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Datasets</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Code Repositories</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Presentations</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Press Coverage</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Subscribe</h3>
+                    <p class="text-gray-400 mb-4">
+                        Subscribe to our newsletter to receive updates on our latest research and publications.
+                    </p>
+                    <form class="flex">
+                        <input type="email" placeholder="Your email" class="px-4 py-2 rounded-l-lg focus:outline-none text-dark w-full">
+                        <button type="submit" class="bg-primary hover:bg-primary/90 px-4 py-2 rounded-r-lg transition-colors">
+                            <i class="fa fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-500 text-sm">
+                <p>© 2025 Immersive Technology Lab. All rights reserved.</p>
+                <div class="mt-2 space-x-4">
+                    <a href="#" class="hover:text-gray-400 transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-gray-400 transition-colors">Terms of Use</a>
+                    <a href="#" class="hover:text-gray-400 transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 回到顶部按钮 -->
+    <button id="back-to-top" class="fixed bottom-6 right-6 w-12 h-12 bg-primary text-white rounded-full shadow-lg flex items-center justify-center opacity-0 invisible transition-all duration-300 hover:bg-primary/90 z-50">
+        <i class="fa fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript -->
+    <script>
+        // 导航栏滚动效果
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-white', 'shadow');
+                navbar.classList.remove('bg-white/90');
+            } else {
+                navbar.classList.remove('bg-white', 'shadow');
+                navbar.classList.add('bg-white/90');
+            }
+        });
+        
+        // 移动端菜单
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // 如果是移动端，点击后关闭菜单
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+        
+        // 回到顶部按钮
+        const backToTopButton = document.getElementById('back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopButton.classList.remove('opacity-0', 'invisible');
+                backToTopButton.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopButton.classList.add('opacity-0', 'invisible');
+                backToTopButton.classList.remove('opacity-100', 'visible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // 图表
+        window.addEventListener('load', () => {
+            // 任务完成时间图表
+            const timeCtx = document.getElementById('timeChart').getContext('2d');
+            new Chart(timeCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Low Complexity', 'Medium Complexity', 'High Complexity'],
+                    datasets: [
+                        {
+                            label: 'Traditional',
+                            data: [8.2, 11.5, 16.4],
+                            backgroundColor: '#3B82F6',
+                            borderColor: '#2563EB',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Gaze-Contingent',
+                            data: [6.8, 9.1, 12.7],
+                            backgroundColor: '#0EA5E9',
+                            borderColor: '#0284C7',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Completion Time (seconds)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: false
+                        }
+                    }
+                }
+            });
+            
+            // 认知负载图表
+            const loadCtx = document.getElementById('cognitiveLoadChart').getContext('2d');
+            new Chart(loadCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Mental Demand', 'Physical Demand', 'Temporal Demand', 'Performance', 'Effort', 'Frustration'],
+                    datasets: [
+                        {
+                            label: 'Traditional',
+                            data: [75, 40, 65, 60, 70, 65],
+                            backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                            borderColor: '#3B82F6',
+                            pointBackgroundColor: '#3B82F6',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: '#3B82F6'
+                        },
+                        {
+                            label: 'Gaze-Contingent',
+                            data: [60, 25, 50, 65, 55, 50],
+                            backgroundColor: 'rgba(14, 165, 233, 0.2)',
+                            borderColor: '#0EA5E9',
+                            pointBackgroundColor: '#0EA5E9',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: '#0EA5E9'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+    </body></html>
